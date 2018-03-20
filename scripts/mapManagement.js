@@ -12,10 +12,28 @@ module.exports = (function () {
         map: {
             init () {
                 mapManagement.mapBox = mapBox;
-                mapManagement.client = new mapManagement.mapBox("pk.eyJ1IjoiaWl5YW1hIiwiYSI6ImNqZWZxM3AwOTFoMTgycXBrZWo5NGF6eWoifQ.8bABDvjASinWudt00f0Oxg");
-                console.log(mapManagement.client);
+                const client = mapManagement.client = new mapBox("pk.eyJ1IjoiaWl5YW1hIiwiYSI6ImNqZWZxM3AwOTFoMTgycXBrZWo5NGF6eWoifQ.8bABDvjASinWudt00f0Oxg");
+                console.log("client", client);
 
-                mapManagement.client.geocodeForward('Chester, NJ')
+                client.readDataset('dataset-id',
+                function(err, dataset) {
+                    console.log(dataset);
+                });
+                
+                var options = { name: 'foo' };
+                client.updateDataset('dataset-id', options, function(err, dataset) {
+                    console.log(dataset);
+                });
+
+                client.listFeatures('dataset-id', {}, function(err, collection) {
+                    console.log("collection", collection);
+                });
+                
+                client.listStyles(function(err, styles) {
+                    console.log(styles);
+                });
+
+                mapManagement.client.geocodeForward('Paris, France')
                 // mapManagement.client.geocodeForward('Chester, NJ')
                 // .then(function(res) {
                 //     // res is the http response, including: status, headers and entity properties
