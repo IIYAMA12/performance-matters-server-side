@@ -2,7 +2,8 @@
 const path = require("path"),
     express = require("express"),
     bodyParser = require("body-parser"),
-    session = require("express-session")
+    session = require("express-session"),
+    mapManagement = require("./scripts/mapManagement")
 ;
 
 var sess = {
@@ -36,7 +37,7 @@ app.get("*", function(req, res, next)    {
 
 
 app.get("/", function(req, res, next) {
-	res.render("/index");
+	res.render("index");
 });
 
 // Define bodyparser
@@ -50,3 +51,4 @@ app.use(express.static('public'));
 app.listen(3000, function() {
     console.log("App listening at http://localhost:3000/");
 });
+
