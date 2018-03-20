@@ -79,7 +79,7 @@ const app = {
                 });
             },
             map () {
-                mapboxgl.accessToken = 'pk.eyJ1IjoiaWl5YW1hIiwiYSI6ImNqZWZxM3AwOTFoMTgycXBrZWo5NGF6eWoifQ.8bABDvjASinWudt00f0Oxg';
+                mapboxgl.accessToken = "pk.eyJ1IjoiaWl5YW1hIiwiYSI6ImNqZWZxM3AwOTFoMTgycXBrZWo5NGF6eWoifQ.8bABDvjASinWudt00f0Oxg";
                 console.log("make map melement");
                 app.map.element = new mapboxgl.Map({
                     container: 'map',
