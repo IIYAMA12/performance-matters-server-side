@@ -1,0 +1,17 @@
+{
+  "name": "optimizing-javascript",
+  "version": "1.0.0",
+  "description": "Moving project to serverside",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "Jorik van Essen",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "express-session": "^1.15.6",
+    "node.js": "0.0.0"
+  }
+}
