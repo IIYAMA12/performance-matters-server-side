@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Amsterdam - street information</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.css' rel='stylesheet' />
+    <link rel="stylesheet" href="styles/reset.css" />
+    <link rel="stylesheet" href="styles/main.css" />
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.2.0/mapbox-gl-geocoder.min.js'></script>
+    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.2.0/mapbox-gl-geocoder.css' type='text/css' />
+
+</head>
+
+<body>
+    <header>
+        <h1>Bekijk foto's van jouw buurt door de jaren heen!</h1>
+    </header>
+    <main>
+        <section >
+            <div id="map"></div>
+            <footer>
+                <details>
+                    <summary>Bediening</summary>
+                    <ul>
+                        <li>Klik / Tap op een straat voor meer informatie.</li>
+                        <li>Dubbelklik / Dubbeltap op de kaart om een nieuw gebied in te laden.</li>
+                    </ul>
+                </details>
+            </footer>
+        </section>
+        <article id="map-information" class="mobile-information-hidden">
+        </article>
+    </main>
+    <dialog open="true" class="hidden">
+        <figure>
+            <img src="" alt="">
+            <figcaption></figcaption>
+        </figure>
+        <button type="button" name="close-dialog">Close</button>
+    </dialog>
+    <div id="main-zero-state">
+        <img id="zerostate-controls" src="images/zerostate-controls.svg" alt="Controls">
+        <img id="zerostate-photos1" src="images/zerostate-photos1.svg" alt="Foto's">
+        <img id="zerostate-title" src="images/zerostate-title.svg" alt="Bekijk foto's van jouw buurt door de jaren heen!">
+    </div>
+</body>
+
+<script src="scripts/index.js"></script>
+</html>
