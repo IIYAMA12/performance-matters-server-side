@@ -45,17 +45,32 @@ router.get("/street-info/:uri", function(req, res, next) {
             LIMIT 100
         `;
 
+
+
         const encodedquery = encodeURIComponent(sparqlquery);
 
         const queryurl = 'https://api.data.adamlink.nl/datasets/AdamNet/all/services/endpoint/sparql?default-graph-uri=&query=' + encodedquery + '&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
 
+        const streetsData = mapManagement.map.render(mapManagement.map.data);
+
         fetchUrl(queryurl, function (error, meta, body) {
+            
             if (error == undefined) {
-                console.log(body, body.toString());
+                const photosData = body.toString();
                 // body = JSON.parse(body);
                 // console.log(body);
+                res.render("index", {
+                    pageData:{ 
+                        streetsData: streetsData,
+                        photosData : photosData
+                    },
+                });
             } else {
-                console.log("Error: fetchURL failed");
+                res.render("index", {
+                    pageData:{ 
+                        streetsData: streetsData,
+                    },
+                });
             }
         });
     }
