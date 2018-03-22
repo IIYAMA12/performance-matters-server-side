@@ -4,7 +4,7 @@ const router = express.Router();
 const fetch = require("fetch");
 const fetchUrl = fetch.fetchUrl;
 const mapManagement = require("../../scripts/mapManagement");
-
+const session = require("express-session");
 
 
 router.get("/street-info/:uri", function(req, res, next) {
@@ -47,21 +47,9 @@ router.get("/street-info/:uri", function(req, res, next) {
             
             if (error == undefined) {
                 const photosData = body.toString();
-                // body = JSON.parse(body);
-                // console.log(body);
-                res.render("index", {
-                    pageData:{ 
-                        streetsData: streetsData,
-                        photosData : photosData
-                    },
-                });
-            } else {
-                res.render("index", {
-                    pageData:{ 
-                        streetsData: streetsData,
-                    },
-                });
+                req.session.cookie.photosData = photosData;
             }
+            res.redirect("index");
         });
     }
 });
