@@ -15,10 +15,6 @@
                     <% 
                         } 
                     %>
-
-                    <%
-                        console.log(pageData.photoData);
-                    %>
                 </svg>
 
                 <img usemap="#streets-map" src="images/map.png" alt="Map">
@@ -47,6 +43,9 @@
             </footer>
         </section>
         <article id="map-information" class="mobile-information-hidden">
+            <%-     
+                pageData.photoData
+            %>
         </article>
     </main>
     <dialog open="true" class="hidden">
