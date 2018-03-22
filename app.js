@@ -3,7 +3,8 @@ const path = require("path"),
     express = require("express"),
     bodyParser = require("body-parser"),
     session = require("express-session"),
-    mapManagement = require("./scripts/mapManagement")
+    mapManagement = require("./scripts/mapManagement"),
+    streetManagement = require("./scripts/streetManagement")
 ;
 
 var sess = {
@@ -40,9 +41,10 @@ app.get("/", function(req, res, next) {
 
     const streetsData = mapManagement.map.render(mapManagement.map.data, req);
     res.render("index", {
+
             pageData:{ 
                 streetsData: streetsData,
-                photoData: req.session.cookie.photoData
+                photoData: streetManagement.render(req.session.cookie.photosData)
             },
         }
     );
