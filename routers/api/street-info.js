@@ -49,7 +49,7 @@ router.get("/street-info/:uri", function(req, res, next) {
                 const photosData = body.toString();
                 req.session.cookie.photosData = photosData;
             }
-            res.redirect("index");
+            res.redirect("./");
         });
     }
 });
