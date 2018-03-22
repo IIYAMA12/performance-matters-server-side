@@ -7,7 +7,7 @@
             <div id="map">
                 <svg width="782" height="855">
                     <%
-                        for (let i = 0; i < streetsData.length; i++) {
+                        for (let i = 0; i < pageData.streetsData.length; i++) {
                     %>
                     <%-     
                         pageData.streetsData[i].area.svgElement
@@ -24,7 +24,7 @@
                 <img usemap="#streets-map" src="images/map.png" alt="Map">
                 <map name="streets-map">
                     <%
-                        for (let i = 0; i < streetsData.length; i++) {
+                        for (let i = 0; i < pageData.streetsData.length; i++) {
                     %>
                     <%-     
                         pageData.streetsData[i].area.areaElement
