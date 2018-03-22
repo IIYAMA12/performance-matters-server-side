@@ -216,8 +216,7 @@ module.exports = (function () {
 
                     polylineCoord = polylineCoord.trim();
                     coord = coord.slice(1, -1);
-// 
-                    return {areaElement: "<area shape=\"poly\" coords=\"" + coord + "\" alt=\"" + streetName + "\" uri=\"uri\" href=\"left.html\">", svgElement: "<polyline fill=\"none\" fill=\"white\" points=\"" + polylineCoord + "\"/>"};
+                    return {areaElement: "<area shape=\"poly\" coords=\"" + coord + "\" alt=\"" + streetName.value + "\" uri=\"" + ( uri != undefined ? uri.value : "") + "\" href=\"left.html\">", svgElement: "<polyline fill=\"none\" stroke=\"white\" points=\"" + polylineCoord + "\"/>"};
                 }
 
             },
