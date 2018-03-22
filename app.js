@@ -37,7 +37,8 @@ app.get("*", function(req, res, next)    {
 
 
 app.get("/", function(req, res, next) {
-    const streetsData = mapManagement.map.render(mapManagement.map.data);
+
+    const streetsData = mapManagement.map.render(mapManagement.map.data, req);
 	res.render("index", {streetsData: streetsData});
 });
 
