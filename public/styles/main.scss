@@ -299,7 +299,7 @@ dialog {
     top: 50%;
     transform: translate(-50%, -50%);
     width: 5rem;
-    height: 5rem;
+    min-height: 2rem;
     background: url("../images/loader.svg") 0 0;
     background-repeat: no-repeat;
     background-size: cover;
