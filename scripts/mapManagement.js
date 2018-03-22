@@ -147,7 +147,7 @@ module.exports = (function () {
                 return data;
             },
             
-            makeArea (points) {
+            makeArea (points, streetName, uri) {
                 // image size: 782 × 855
                 const 
                     imageX = 782,
@@ -213,11 +213,11 @@ module.exports = (function () {
                             }
                         }
                     }
-                    // console.log("------------------");
+
                     polylineCoord = polylineCoord.trim();
                     coord = coord.slice(1, -1);
-                    // console.log(coord);
-                    return {areaElement: "<area shape=\"poly\" coords=\"" + coord + "\" alt=\"street name\" href=\"left.html\">", svgElement: "<polyline fill=\"none\" stroke=\"white\" points=\"" + polylineCoord + "\"/>"};
+
+                    return {areaElement: "<area shape=\"poly\" coords=\"" + coord + "\" alt=\"" + streetName + "\" uri=\"uri\" href=\"left.html\">", svgElement: "<polyline fill=\"none\" fill=\"white\" points=\"" + polylineCoord + "\"/>"};
                 }
 
             },
@@ -273,7 +273,12 @@ module.exports = (function () {
                                 const streetData = {};
                                 streetsData[streetsData.length] = streetData;
                                 
-                                streetData.area = this.makeArea(points);
+                                if (binding.street != undefined)  {
+                                    streetData.uri = binding.street;
+                                }
+
+                                streetData.streetName = binding.streetName;
+                                streetData.area = this.makeArea(points, streetData.streetName, streetData.uri );
                                 ////////////////
                                 // apply data //
                                 const layerId = "street:" + this.streetIndex;
@@ -286,13 +291,10 @@ module.exports = (function () {
                                 // const factor = (size - minSize) / (maxSize - minSize);
                                 // dynamicObjects.paint["line-color"] = app.utility.rgbToHex(Math.floor(factor * 200), Math.floor((1 - factor) * 200), 0);
     
-                                streetData.streetName = binding.streetName;
+                                
     
                                 // console.log(binding.street);
-                                if (binding.street != undefined)  { // && typeof(binding.street) == "string")
-                                    // console.log("uri", typeof(binding.street));
-                                    streetData.uri = binding.street; //
-                                }
+
     
                                 if (binding.hasEarliestBeginTimeStamp != undefined)  {
                                     streetData.hasEarliestBeginTimeStamp = binding.hasEarliestBeginTimeStamp; //
