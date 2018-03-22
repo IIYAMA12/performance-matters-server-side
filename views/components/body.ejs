@@ -10,10 +10,14 @@
                         for (let i = 0; i < streetsData.length; i++) {
                     %>
                     <%-     
-                            streetsData[i].area.svgElement
+                        pageData.streetsData[i].area.svgElement
                     %>
                     <% 
                         } 
+                    %>
+
+                    <%
+                        console.log(pageData.photoData);
                     %>
                 </svg>
 
@@ -23,7 +27,7 @@
                         for (let i = 0; i < streetsData.length; i++) {
                     %>
                     <%-     
-                            streetsData[i].area.areaElement
+                        pageData.streetsData[i].area.areaElement
                     %>
                     <% 
                         } 
