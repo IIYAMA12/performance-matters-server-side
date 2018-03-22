@@ -41,7 +41,6 @@ app.get("/", function(req, res, next) {
 
     const streetsData = mapManagement.map.render(mapManagement.map.data, req);
     res.render("index", {
-            console.log(req.session.photosData);
             pageData:{ 
                 streetsData: streetsData,
                 photoData: streetManagement.render(req.session.photosData)
