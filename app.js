@@ -39,7 +39,12 @@ app.get("*", function(req, res, next)    {
 app.get("/", function(req, res, next) {
 
     const streetsData = mapManagement.map.render(mapManagement.map.data, req);
-	res.render("index", {streetsData: streetsData});
+    res.render("index", {
+            pageData:{ 
+                streetsData: streetsData
+            },
+        }
+    );
 });
 
 // Define bodyparser
