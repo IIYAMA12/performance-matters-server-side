@@ -4,8 +4,35 @@
     </header>
     <main>
         <section >
-            <div id="map"></div>
+            <div id="map">
+                <svg width="782" height="855">
+                    <%
+                        for (let i = 0; i < streetsData.length; i++) {
+                    %>
+                    <%-     
+                            streetsData[i].area.svgElement
+                    %>
+                    <% 
+                        } 
+                    %>
+                </svg>
+
+                <img usemap="#streets-map" src="images/map.png" alt="Map">
+                <map name="streets-map">
+                    <%
+                        for (let i = 0; i < streetsData.length; i++) {
+                    %>
+                    <%-     
+                            streetsData[i].area.areaElement
+                    %>
+                    <% 
+                        } 
+                    %>
+                    <!-- <area shape="poly" coords="0,0,50,0,50,50,0,50" alt="street name" href="left.html"> -->
+                </map>
+            </div>
             <footer>
+                
                 <details>
                     <summary>Bediening</summary>
                     <ul>

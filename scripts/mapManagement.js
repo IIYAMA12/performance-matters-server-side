@@ -12,49 +12,18 @@ module.exports = (function () {
         map: {
             init () {
                 mapManagement.mapBox = mapBox;
-                const client = mapManagement.client = new mapBox("pk.eyJ1IjoiaWl5YW1hIiwiYSI6ImNqZWZxM3AwOTFoMTgycXBrZWo5NGF6eWoifQ.8bABDvjASinWudt00f0Oxg");
-                console.log("client", client);
+                const client = mapManagement.client = new mapBox("sk.eyJ1IjoiaWl5YW1hIiwiYSI6ImNqZXpyNWpzdjBjeGUycXQwN3VmMjFnczYifQ.Kj28oQdiRPO-YG0LpSsqOw");
 
-                client.readDataset('dataset-id',
-                function(err, dataset) {
-                    console.log(dataset);
-                });
-                
-                var options = { name: 'foo' };
-                client.updateDataset('dataset-id', options, function(err, dataset) {
-                    console.log(dataset);
-                });
+ 
 
-                client.listFeatures('dataset-id', {}, function(err, collection) {
-                    console.log("collection", collection);
-                });
-                
-                client.listStyles(function(err, styles) {
-                    console.log(styles);
-                });
-
-                mapManagement.client.geocodeForward('Paris, France')
-                // mapManagement.client.geocodeForward('Chester, NJ')
-                // .then(function(res) {
-                //     // res is the http response, including: status, headers and entity properties
-                //     var data = res.entity; // data is the geocoding result as parsed JSON
-                //     this.load.map();
-                //     console.log("geocodeForward", res);
-                    
-                // })
-                // .catch(function(err) {
-                //     // handle errors
-                // });
-
-                
 
                 const initialMapPoint = [4.899431, 52.379189];
                 this.load.data(initialMapPoint[0], initialMapPoint[1]);
             },
-    
-            layers: [],
             streetIndex : 0,
-    
+            data: {
+
+            },
             load: {
                 data (lng, lat) {
     
@@ -83,7 +52,7 @@ module.exports = (function () {
                             } .
     
     
-                            FILTER (bif:st_may_intersect (?point, ?streetgeom, 0.006)) .
+                            FILTER (bif:st_may_intersect (?point, ?streetgeom, 0.01)) .
     
     
     
@@ -115,37 +84,31 @@ module.exports = (function () {
                     //////////////////////////
                     // using XMLHttpRequest //
 
-                    const httpRequest = new XMLHttpRequest();
+                    // const httpRequest = new XMLHttpRequest();
 
-                    httpRequest.open("GET", queryurl);
+                    // httpRequest.open("GET", queryurl);
 
-                    httpRequest.addEventListener("load", function (e) {
-                        // console.log("load", this);
-                    });
+                    // httpRequest.addEventListener("load", function (e) {
+                    //     // console.log("load", this);
+                    // });
 
-                    httpRequest.send();
+                    // httpRequest.send();
 
                     /////////////////
                     // using Fetch //
 
-                    // fetchUrl(queryurl, function (error, meta, body) {
-                    //     if (error == undefined) {
-                    //         console.log(body, body.toString(), "???");
-                    //         // body = JSON.parse(body);
-                    //         // console.log(body);
-                    //     } else {
-                    //         console.log("Error: fetchURL failed");
-                    //     }
-                    // });
+                    fetchUrl(queryurl, function (error, meta, body) {
+                        if (error == undefined) {
+                            // console.log(body, body.toString();
+                            // body = JSON.parse(body);
+                            // console.log(body);
+                            // mapManagement.map.render(JSON.parse(body.toString())); mapManagement.map.render();
+                            mapManagement.map.data = JSON.parse(body.toString());
+                        } else {
+                            console.log("Error: fetchURL failed");
+                        }
+                    });
 
-                    // .then((resp) => resp.json()) // transform the data into json
-                    // .then(function(data) {
-                    //     app.map.render(app.map.filter(data));
-                    // })
-                    // .catch(function(error) {
-                    //     // if there is any error you will catch them here
-                    //     console.error(error);
-                    // });
 
 
                 },
@@ -183,11 +146,83 @@ module.exports = (function () {
                 results.bindings = bindings;
                 return data;
             },
-    
-            render (data) {
-                if (true) {
-                    return false;
+            
+            makeArea (points) {
+                // image size: 782 × 855
+                const 
+                    imageX = 782,
+                    imageY = 855
+                ;
+                
+                let coord = ",";
+                let polylineCoord = " ";
+                
+                const coordBoundingMinX = 4.8826511004105555
+                const coordBoundingMinY = 52.36798838874884
+
+                const coordBoundingMaxX = 4.916210899614015
+                const coordBoundingMaxY = 52.390386770851705 
+
+                const coordBoundingSizeX = coordBoundingMaxX - coordBoundingMinX
+                const coordBoundingSizeY = coordBoundingMaxY  - coordBoundingMinY
+                // console.log(coordBoundingSizeX, coordBoundingSizeY);
+                for (let i = 0; i < points.length; i++) {
+                    const point = points[i];
+                    const nextPoint = points[i + 1];
+                    if (nextPoint != undefined) {
+
+
+                        const line = [
+                            {x: point[0] - coordBoundingMinX, y: point[1] - coordBoundingMinY},
+                            {x: nextPoint[0] - coordBoundingMinX, y: nextPoint[1] - coordBoundingMinY}
+                        ];
+                        
+                        const rotation = mapManagement.utility.findRotation(line[0].x,line[0].y,line[1].x,line[1].y);
+                        const rotation2 = rotation + 360;
+
+
+                        for (let lineIndex = 0; lineIndex < line.length; lineIndex++) {
+                            const 
+                                x = line[lineIndex].x,
+                                y = line[lineIndex].y
+                            ;
+
+                            for (let offsetIndex = 0; offsetIndex < 2; offsetIndex++) { 
+                                const rotOffset =  (rotation + (offsetIndex === 0 ? 90 : -90) * 3.141592653 * 2)/360;
+                                
+                                const offset = 0.0001;
+
+                                let 
+                                    linePointX = x + Math.cos(rotOffset) * offset, 
+                                    linePointY = y + Math.sin(rotOffset) * offset
+                                ;
+
+
+                                linePointX = imageX * (linePointX / coordBoundingSizeX);
+                                linePointY = (imageY * ((coordBoundingSizeY - linePointY) / coordBoundingSizeY));
+
+
+                                
+                                if (offsetIndex === 0) {
+                                    coord = "," + linePointX + "," + linePointY + coord;
+                                    polylineCoord = " " + linePointX + "," + linePointY + polylineCoord;
+                                } else {
+                                    coord = coord + linePointX + "," + linePointY + ","
+                                    polylineCoord = polylineCoord + linePointX + "," + linePointY + " "
+                                }
+                            }
+                        }
+                    }
+                    // console.log("------------------");
+                    polylineCoord = polylineCoord.trim();
+                    coord = coord.slice(1, -1);
+                    // console.log(coord);
+                    return {areaElement: "<area shape=\"poly\" coords=\"" + coord + "\" alt=\"street name\" href=\"left.html\">", svgElement: "<polyline fill=\"none\" stroke=\"white\" points=\"" + polylineCoord + "\"/>"};
                 }
+
+            },
+            render (data) {
+
                 const results = data.results;
                 const bindings = results.bindings;
     
@@ -202,65 +237,7 @@ module.exports = (function () {
                     return Math.max(cur.size.value, acc );
                 }, -Infinity);
     
-    
-    
-    
-                ////////////////////////
-                // Re-use-able object //
-                //* Which will increase the load speed
-    
-                const reUseAbleLayerData = {
-                    "id": null,
-                    "type": "line",
-                    "interactive": true,
-                    "source": {
-                        "type": "geojson",
-                        "data": {
-                            "type": "Feature",
-                            "properties": {
-                                "customStreet": true
-                            },
-                            "geometry": {
-                                "type": "LineString",
-                                "coordinates": null
-                            }
-                        }
-                    },
-                    "layout": {
-                        "line-join": "round",
-                        "line-cap": "round"
-                    },
-                    "paint": {
-                        "line-color": "white",
-                        "line-width": 5, // 5
-                        "line-color-transition": {
-                          "duration": 700,
-                          "delay": 0
-                        }
-                    }
-                };
-    
-                // dynamic components //
-                const dynamicObjects = {
-                    geometry: reUseAbleLayerData.source.data.geometry,
-                    paint: reUseAbleLayerData.paint,
-                    properties: reUseAbleLayerData.source.data.properties
-                };
-    
-    
-                ///////////////////////
-                // clean up old data //
-                if (app.map.element != undefined) {
-                    // console.log(app.map.element);
-    
-    
-                    const layers =  app.map.layers;
-                    // console.log(layers);
-                    for (var i = 0; i < layers.length; i++) {
-                        app.map.element.removeLayer(layers[i].id);
-                    }
-                    app.map.layers = [];
-                }
+                const streetsData = [];
     
                 for (let i = 0; i < bindings.length; i++) {
                     const binding = bindings[i];
@@ -292,50 +269,42 @@ module.exports = (function () {
                                 points = points.filter(function (d) {
                                     return typeof(d[0]) == "number" && !isNaN(d[0]) && typeof(d[1]) == "number" && !isNaN(d[1]);
                                 });
-    
-    
+                                
+                                const streetData = {};
+                                streetsData[streetsData.length] = streetData;
+                                
+                                streetData.area = this.makeArea(points);
                                 ////////////////
                                 // apply data //
                                 const layerId = "street:" + this.streetIndex;
                                 // console.log(layerId);
-                                reUseAbleLayerData.id = layerId;
+                                streetData.id = layerId;
                                 this.streetIndex++;
     
-                                dynamicObjects.geometry.coordinates = points;
-    
+                                streetData.coordinates = points;
+                                
                                 // const factor = (size - minSize) / (maxSize - minSize);
                                 // dynamicObjects.paint["line-color"] = app.utility.rgbToHex(Math.floor(factor * 200), Math.floor((1 - factor) * 200), 0);
     
-                                dynamicObjects.properties.streetName = binding.streetName;
+                                streetData.streetName = binding.streetName;
     
                                 // console.log(binding.street);
                                 if (binding.street != undefined)  { // && typeof(binding.street) == "string")
-                                    console.log("uri", typeof(binding.street));
-                                    dynamicObjects.properties.uri = binding.street; //
+                                    // console.log("uri", typeof(binding.street));
+                                    streetData.uri = binding.street; //
                                 }
     
                                 if (binding.hasEarliestBeginTimeStamp != undefined)  {
-    
-                                    dynamicObjects.properties.hasEarliestBeginTimeStamp = binding.hasEarliestBeginTimeStamp; //
+                                    streetData.hasEarliestBeginTimeStamp = binding.hasEarliestBeginTimeStamp; //
                                 }
-    
-    
-    
-    
-                                ///////////////
-                                // add layer //
-    
-                                app.map.element.addLayer(reUseAbleLayerData);
-    
-                                const layers =  app.map.layers;
-                                layers[layers.length] = {id: layerId};
-    
+                                
                             } else {
                                 console.error("Unknown geo data");
                             }
                         }
                     }
                 }
+                return streetsData;
             }
         },
         utility: {
@@ -345,6 +314,10 @@ module.exports = (function () {
             },
             rgbToHex(r, g, b) {
                 return "#" + app.utility.componentToHex(r) + app.utility.componentToHex(g) + app.utility.componentToHex(b);
+            },
+            findRotation( x1, y1, x2, y2 ) {
+                let rotation = -(Math.atan2( x2 - x1, y2 - y1 ) * (180 / Math.PI) )
+                return rotation < 0 ? rotation + 360 : rotation
             }
         }
     };
