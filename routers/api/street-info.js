@@ -3,8 +3,7 @@ const express = require('express');
 const router = express.Router();
 const fetch = require("fetch");
 const fetchUrl = fetch.fetchUrl;
-const mapManagement = require("../../scripts/mapManagement");
-const session = require("express-session");
+
 
 
 router.get("/street-info/:uri", function(req, res, next) {
@@ -41,13 +40,12 @@ router.get("/street-info/:uri", function(req, res, next) {
 
         const queryurl = 'https://api.data.adamlink.nl/datasets/AdamNet/all/services/endpoint/sparql?default-graph-uri=&query=' + encodedquery + '&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
 
-        const streetsData = mapManagement.map.render(mapManagement.map.data);
 
         fetchUrl(queryurl, function (error, meta, body) {
             
             if (error == undefined) {
                 const photosData = body.toString();
-                req.session.cookie.photosData = photosData;
+                req.session.photosData = photosData;
             }
             res.redirect("../../");
         });
