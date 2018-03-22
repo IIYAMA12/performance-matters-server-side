@@ -3,18 +3,7 @@ const express = require('express');
 const router = express.Router();
 const fetch = require("fetch");
 const fetchUrl = fetch.fetchUrl;
-const mapManagement = require("./scripts/mapManagement");
-
-// prepare the paths
-// const routerPaths = {
-//     path: "/",
-//     getRedirectPath () {
-//         return this.path;
-//     },
-//     getRenderPath(){
-//         return "." + this.path;
-//     }
-// };
+const mapManagement = require("../../scripts/mapManagement");
 
 
 
