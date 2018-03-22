@@ -37,7 +37,8 @@ app.get("*", function(req, res, next)    {
 
 
 app.get("/", function(req, res, next) {
-	res.render("index");
+    const streetsData = mapManagement.map.render(mapManagement.map.data);
+	res.render("index", {streetsData: streetsData});
 });
 
 // Define bodyparser
@@ -45,6 +46,33 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(express.static('public'));
+
+
+// Routers
+const routers = {
+    path: "./routers",
+    allData: [
+        {
+            path: "/api",
+            fileName: "street-info"
+        }
+    ]
+};
+
+
+(function(){
+    const path = routers.path;
+    const allData = routers.allData;
+    for (var i = 0; i < allData.length; i++) {
+        const data = allData[i];
+        var module = require(path + data.path + "/" + data.fileName);
+        console.log(data.path, module);
+        app.use(data.path, module);
+       
+        // app.use(app.router);
+        // routes.initialize(app);
+    }
+})();
 
 
 // Start server
