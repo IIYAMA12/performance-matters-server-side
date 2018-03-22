@@ -1,10 +1,13 @@
 const streetManagement = {
     render (data) {
+        // console.log("data", data);
+        
         if (data != undefined) {            
-            const results = data.results;
+            const results = JSON.parse(data).results;
+            
             if (results != undefined) {
                 const bindings = results.bindings;
-                console.log(bindings, bindings.length);
+                // console.log(bindings, bindings.length);
                 
                 if (bindings.length > 0) {
 
