@@ -7,23 +7,27 @@
             <div id="map">
                 <svg width="782" height="855">
                     <%
-                        for (let i = 0; i < streetsData.length; i++) {
+                        for (let i = 0; i < pageData.streetsData.length; i++) {
                     %>
                     <%-     
-                            streetsData[i].area.svgElement
+                        pageData.streetsData[i].area.svgElement
                     %>
                     <% 
                         } 
+                    %>
+
+                    <%
+                        console.log(pageData.photoData);
                     %>
                 </svg>
 
                 <img usemap="#streets-map" src="images/map.png" alt="Map">
                 <map name="streets-map">
                     <%
-                        for (let i = 0; i < streetsData.length; i++) {
+                        for (let i = 0; i < pageData.streetsData.length; i++) {
                     %>
                     <%-     
-                            streetsData[i].area.areaElement
+                        pageData.streetsData[i].area.areaElement
                     %>
                     <% 
                         } 
