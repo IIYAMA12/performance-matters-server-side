@@ -406,3 +406,8 @@ dialog {
     bottom: 3rem;
     animation: zerostate-component-fadein 2s;
 }
+
+svg {
+    position: absolute;
+    pointer-events: none;
+}

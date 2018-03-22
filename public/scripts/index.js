@@ -283,7 +283,7 @@ window.addEventListener("load", ((e) => {
     if (mapboxgl != undefined) {
         app.init();
         const initialMapPoint = [4.899431, 52.379189];
-        app.map.load.data(initialMapPoint[0], initialMapPoint[1]);
+        // app.map.load.data(initialMapPoint[0], initialMapPoint[1]);
 
 
 
@@ -293,6 +293,14 @@ window.addEventListener("load", ((e) => {
         // disable double click zoom
         map.element.doubleClickZoom.disable();
 
+        // const fakePointData = [[initialMapPoint[0] - 1000, initialMapPoint[1] - 1000], [initialMapPoint[0] + 1000, initialMapPoint[1] + 1000]];
+                    // const features = map.queryRenderedFeatures(fakePointData);
+        console.log(map.element.getCenter(), map.element.getBounds());
+       
+        if (true) {
+            return false;
+        }
+
         let focusedOnId;
         let dialogBindings = [];
 
@@ -301,6 +309,7 @@ window.addEventListener("load", ((e) => {
             dialogBindings = [];
         });
 
+        
 
         const showDialog = function (e) {
 
