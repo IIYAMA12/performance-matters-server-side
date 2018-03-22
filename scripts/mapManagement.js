@@ -1,4 +1,4 @@
-module.exports = (function () {
+module.exports = (function (req) {
     const fetch = require("fetch");
     const mapBox = require('mapbox');
     const fetchUrl = fetch.fetchUrl;
@@ -216,9 +216,9 @@ module.exports = (function () {
 
                     polylineCoord = polylineCoord.trim();
                     coord = coord.slice(1, -1);
-                    return {areaElement: "<area shape=\"poly\" coords=\"" + coord + "\" alt=\"" + streetName.value + "\" href=\"" + window.location.href + "/street-info/" + ( uri != undefined ? uri.value : "") + "\">", svgElement: "<polyline fill=\"none\" stroke=\"white\" points=\"" + polylineCoord + "\"/>"};
-                }
 
+                    return {areaElement: "<area shape=\"poly\" coords=\"" + coord + "\" alt=\"" + streetName.value + "\" href=\"" +  "/api/street-info/" + ( uri != undefined ? encodeURIComponent(uri.value) : "") + "\">", svgElement: "<polyline fill=\"none\" stroke=\"white\" points=\"" + polylineCoord + "\"/>"};
+                }
             },
             render (data) {
 
