@@ -101,27 +101,6 @@ main {
     box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 0.1);
 }
 
-#map-information img {
-    width: inherit;
-}
-
-#map-information img:not(.loaded) {
-    background: url("../images/image-loader.gif") 0 0;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    background-size: 5rem;
-    height: 7rem;
-    display: block;
-    color: transparent;
-}
-
-@media (max-width: 35rem) {
-    #map-information img:not(.loaded) {
-        background-size: 3rem;
-    }
-}
-
 #map-information h2 {
     padding: 1rem;
     margin: 0 0 0.5rem 0;
