@@ -27,11 +27,11 @@ app.set("view engine", "ejs");
 app.get("*", function(req, res, next)    {
     
     // https://www.npmjs.com/package/express-session-expire-timeout
-    var hours = 3;
-    req.session.cookie.expires = new Date(Date.now() + (3600000 * hours));
-    req.session.cookie.maxAge = hours;
+    // var hours = 3;
+    // req.session.cookie.expires = new Date(Date.now() + (3600000 * hours));
+    // req.session.cookie.maxAge = hours;
 
-    res.locals.lastURLTimeChange = new Date();
+    // res.locals.lastURLTimeChange = new Date();
 
     next();
 });
@@ -41,10 +41,10 @@ app.get("/", function(req, res, next) {
 
     const streetsData = mapManagement.map.render(mapManagement.map.data, req);
     res.render("index", {
-
+            console.log(req.session.photosData);
             pageData:{ 
                 streetsData: streetsData,
-                photoData: streetManagement.render(req.session.cookie.photosData)
+                photoData: streetManagement.render(req.session.photosData)
             },
         }
     );
