@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node app.js",
-    "build": "browserify ./clientside_scripts/main.js -o public/scripts/bundle.js"
+    "build": "browserify clientside_scripts/main.js -o public/scripts/bundle.js"
   },
   "author": "Jorik van Essen",
   "license": "ISC",

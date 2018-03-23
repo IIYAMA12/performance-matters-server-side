@@ -1,6 +1,6 @@
 # performance-matters-server-side
 
-
+## 
 
 ## Street selection boundingbox calculations
 ![Boundingbox calculation](readme-content/boundingboxCalc.png)
@@ -30,3 +30,65 @@ let
 ;
 ```
 
+## Render the streets
+
+<details>
+    <summary>Background map</summery>
+    <img src="https://raw.githubusercontent.com/IIYAMA12/performance-matters-server-side/master/readme-content/map.png">
+</details>
+
+
+
+Generate the the coordination/position strings for SVG polygon element and area element. The offsetIndex is used to indicate to which direction it should extend.
+```JS
+// ... 
+
+            linePointX = imageX * (linePointX / coordBoundingSizeX);
+            linePointY = (imageY * ((coordBoundingSizeY - linePointY) / coordBoundingSizeY));
+
+            // Make the point strings            
+            if (offsetIndex === 0) {
+                coord = "," + linePointX + "," + linePointY + coord;
+                polylineCoord = " " + linePointX + "," + linePointY + polylineCoord;
+            } else {
+                coord = coord + linePointX + "," + linePointY + ","
+                polylineCoord = polylineCoord + linePointX + "," + linePointY + " "
+            }
+        }
+    }
+}
+```
+
+
+
+Remove the separators on the start and the end for both strings.
+```JS
+polylineCoord = polylineCoord.trim();
+
+coord = coord.slice(1, -1);
+```
+
+
+Put everything together. Save the URI encoded in the URL.
+```JS
+return {
+    areaElement: "<area shape=\"poly\" coords=\"" + coord + "\" alt=\"" + streetName.value + "\" href=\"" +  "/api/street-info/" + ( uri != undefined ? encodeURIComponent(uri.value) : "") + "\">", 
+    svgElement: "<polygon fill=\"white\" stroke=\"white\" points=\"" + polylineCoord + "\"/>"};
+```       
+
+
+
+
+## Browserify
+
+### Command to bundle the js:
+```shell
+browserify clientside_scripts/main.js -o public/scripts/bundle.js
+```
+
+
+### Require modules
+```JS
+const imageLoader = require("./image-loading-feedback");
+const zeroState = require("./zero-state");
+```
