@@ -75,7 +75,7 @@ let
 
 
 
-
+### Points to string
 ```JS
 // ... 
 
@@ -97,8 +97,7 @@ let
 Generate the the coordination/position strings for SVG polygon element and area element. The offsetIndex is used to indicate to which direction it should extend.
 
 
-
-
+### Start and end separators
 ```JS
 polylineCoord = polylineCoord.trim();
 
@@ -107,13 +106,23 @@ coord = coord.slice(1, -1);
 Remove the separators on the start and the end for both strings.
 
 
-
+### To HTML
 ```JS
 return {
     areaElement: "<area shape=\"poly\" coords=\"" + coord + "\" alt=\"" + streetName.value + "\" href=\"" +  "/api/street-info/" + ( uri != undefined ? encodeURIComponent(uri.value) : "") + "\">", 
     svgElement: "<polygon fill=\"white\" stroke=\"white\" points=\"" + polylineCoord + "\"/>"};
 ```       
 Put everything together. Save the URI encoded in the URL.
+
+### Output:
+```HTML
+<area shape="poly" coords="256.52595317319435,410.99348318696764,256.52595317319435,410.99348318696764,256.52595317319435,418.627963178187,256.52595317319435,418.627963178187" alt="Hooiwagens steeg" href="/api/street-info/https%3A%2F%2Fadamlink.nl%2Fgeo%2Fstreet%2Fhooiwagens-steeg%2F5454">
+```
+
+```HTML
+<polyline fill="none" stroke="white" points="256.52595317319435,410.99348318696764 256.52595317319435,410.99348318696764 256.52595317319435,418.627963178187 256.52595317319435,418.627963178187"></polyline>
+```
+
 
 
 
