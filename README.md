@@ -29,7 +29,7 @@ Prepare and add the routers.
 
 ```JS
 const express = require('express'); // Get express.
-const router = express.Router(); // Make router with express.
+const router = express.Router(); // Make a router with express.
 
 module.exports = router; // Turn it in to a module.
 ```
@@ -54,7 +54,7 @@ function findRotation( x1, y1, x2, y2 ) {
 [Lua find rotation function](https://wiki.multitheftauto.com/wiki/FindRotation)
 
 3. Add and subtract 90 degrees.
-4. Calcutate the offset, which will give you 2 extra positions. If you do that for both points, you will have 4 points, which can be seen as a boundingbox.
+4. Calcutate the offset, which will give you 2 extra positions. If you do that for both points, you will have 4 positions, which can be seen as a boundingbox.
 ```JS
 const rotOffset =  (rotation + (offsetIndex === 0 ? 90 : -90) * 3.141592653 * 2)/360;
 
@@ -142,3 +142,17 @@ const zeroState = require("./zero-state");
 
 * `image-loading-feedback.js` is used to show a spinner when the image is loading.
 * `zero-state.js` is used to show an extra zero state. (In progress)
+
+
+## Audit
+<details>
+<summary>Audit focus on clientside</summary>
+<img src="https://raw.githubusercontent.com/IIYAMA12/performance-matters-server-side/master/readme-content/performanceAfter.png">
+</details>
+
+<details>
+<summary>Audit focus on serverside (no optimisations)</summary>
+<img src="https://raw.githubusercontent.com/IIYAMA12/performance-matters-server-side/master/readme-content/audit1_1.png">
+<img src="https://raw.githubusercontent.com/IIYAMA12/performance-matters-server-side/master/readme-content/audit1_2.png">
+<img src="https://raw.githubusercontent.com/IIYAMA12/performance-matters-server-side/master/readme-content/audit1_3.png">
+</details>

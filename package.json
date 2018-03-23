@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node app.js",
-    "build": "browserify clientside_scripts/main.js -o public/scripts/bundle.js"
+    "build": "browserify clientside_scripts/main.js -o public/scripts/bundle.js",
+    "expose": "ngrok http 3000"
   },
   "author": "Jorik van Essen",
   "license": "ISC",
