@@ -69,7 +69,7 @@ let
 ## Render the streets
 
 <details>
-<summary>Background map</summery>
+<summary>Background map</summary>
 <img src="https://raw.githubusercontent.com/IIYAMA12/performance-matters-server-side/master/readme-content/map.png">
 </details>
 
