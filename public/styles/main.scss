@@ -69,15 +69,56 @@ main {
 }
 
 
+body.js-available {
+    #map-information {
 
+        img {
+            width: inherit;
+            &:not(.loaded) {
 
+                background: url("../images/image-loader.gif") 0 0;
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-position: center;
 
+                background-size: 5rem;
+                @media (max-width: 35rem) {
+                    background-size: 3rem;
+                }
+
+                min-height: 7rem;
+                display: block;
+                color: rgba(0,0,0,0);
+            }
+        }
+    }
+}
+
+@keyframes loader {
+    to {
+        background-position: -40rem 0;
+    }
+}
+
+.loader {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 5rem;
+    min-height: 2rem;
+    background: url("../images/loader.svg") 0 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+    animation: loader 0.7s infinite steps(8);
+    border-radius: 1rem;
+}
 
 
 #map-information {
     position: relative;
-    height: inherit;
-
+    height: calc(100vh - 2rem);
+    background-color: white;
     @media (min-width: 35rem) {
         overflow-x: hidden;
     }
@@ -107,29 +148,7 @@ main {
 
         box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.10);
     }
-    // img {
-    //     width: inherit;
-    //     &:not(.loaded) {
-    //         // @keyframes image-loader {
-    //         //     to {
-    //         //         transform: rotate(360deg);
-    //         //     }
-    //         // }
-    //         background: url("../images/image-loader.gif") 0 0;
-    //         background-repeat: no-repeat;
-    //         background-size: cover;
-    //         background-position: center;
-    //         // animation: image-loader 0.7s infinite;
-    //         background-size: 5rem;
-    //         @media (max-width: 35rem) {
-    //             background-size: 3rem;
-    //         }
-    //         height: 7rem;
-    //         display: block;
-    //         color: rgba(0,0,0,0);
-    //     }
 
-    // }
 
 
 
@@ -196,7 +215,10 @@ footer {
     min-height: 2rem;
     color: white;
     // overflow: hidden;
-    position: relative;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 70vw;
     @media (max-width: 35rem) {
         position: fixed;
         left: 0;
@@ -287,25 +309,7 @@ dialog {
     }
 }
 
-@keyframes loader {
-    to {
-        background-position: -40rem 0;
-    }
-}
 
-.loader {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 5rem;
-    min-height: 2rem;
-    background: url("../images/loader.svg") 0 0;
-    background-repeat: no-repeat;
-    background-size: cover;
-    animation: loader 0.7s infinite steps(8);
-    border-radius: 1rem;
-}
 
 
 .mapboxgl-control-container > *:not(.mapboxgl-ctrl-top-right), .hidden {

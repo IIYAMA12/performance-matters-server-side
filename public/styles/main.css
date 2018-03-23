@@ -62,9 +62,51 @@ main {
     border-top: 1px solid white;
 }
 
+body.js-available #map-information img {
+    width: inherit;
+}
+
+body.js-available #map-information img:not(.loaded) {
+    background: url("../images/image-loader.gif") 0 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-size: 5rem;
+    min-height: 7rem;
+    display: block;
+    color: transparent;
+}
+
+@media (max-width: 35rem) {
+    body.js-available #map-information img:not(.loaded) {
+        background-size: 3rem;
+    }
+}
+
+@keyframes loader {
+    to {
+        background-position: -40rem 0;
+    }
+}
+
+.loader {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 5rem;
+    min-height: 2rem;
+    background: url("../images/loader.svg") 0 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+    animation: loader 0.7s infinite steps(8);
+    border-radius: 1rem;
+}
+
 #map-information {
     position: relative;
-    height: inherit;
+    height: calc(100vh - 2rem);
+    background-color: white;
 }
 
 @media (min-width: 35rem) {
@@ -156,7 +198,10 @@ footer {
     background-color: black;
     min-height: 2rem;
     color: white;
-    position: relative;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 70vw;
 }
 
 @media (max-width: 35rem) {
@@ -250,26 +295,6 @@ dialog button {
         display: none !important;
         visibility: hidden !important;
     }
-}
-
-@keyframes loader {
-    to {
-        background-position: -40rem 0;
-    }
-}
-
-.loader {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 5rem;
-    min-height: 2rem;
-    background: url("../images/loader.svg") 0 0;
-    background-repeat: no-repeat;
-    background-size: cover;
-    animation: loader 0.7s infinite steps(8);
-    border-radius: 1rem;
 }
 
 .mapboxgl-control-container > *:not(.mapboxgl-ctrl-top-right), .hidden {
