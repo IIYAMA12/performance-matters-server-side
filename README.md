@@ -1,6 +1,42 @@
 # performance-matters-server-side
 
-## 
+## Routers
+```JS
+// Routers
+const routers = {
+    path: "./routers", // Where are the routers located?
+    allData: [ // List of routers.
+        {
+            path: "/api", // Sub paths?
+            fileName: "street-info"
+        }
+    ]
+};
+
+
+(function(){
+    const path = routers.path;
+    const allData = routers.allData;
+    for (var i = 0; i < allData.length; i++) {
+        const data = allData[i];
+        var module = require(path + data.path + "/" + data.fileName); // Import the module
+        app.use(data.path, module); // Give it to the app created by express.
+    }
+})();
+```
+Prepare and add the routers.
+
+
+```JS
+const express = require('express'); // Get express.
+const router = express.Router(); // Make router with express.
+
+module.exports = router; // Turn it in to a module.
+```
+Turn `street-info.js` in to a router.
+
+
+
 
 ## Street selection boundingbox calculations
 ![Boundingbox calculation](readme-content/boundingboxCalc.png)
@@ -33,13 +69,13 @@ let
 ## Render the streets
 
 <details>
-    <summary>Background map</summery>
-    <img src="https://raw.githubusercontent.com/IIYAMA12/performance-matters-server-side/master/readme-content/map.png">
+<summary>Background map</summery>
+<img src="https://raw.githubusercontent.com/IIYAMA12/performance-matters-server-side/master/readme-content/map.png">
 </details>
 
 
 
-Generate the the coordination/position strings for SVG polygon element and area element. The offsetIndex is used to indicate to which direction it should extend.
+
 ```JS
 // ... 
 
@@ -58,24 +94,26 @@ Generate the the coordination/position strings for SVG polygon element and area 
     }
 }
 ```
+Generate the the coordination/position strings for SVG polygon element and area element. The offsetIndex is used to indicate to which direction it should extend.
 
 
 
-Remove the separators on the start and the end for both strings.
+
 ```JS
 polylineCoord = polylineCoord.trim();
 
 coord = coord.slice(1, -1);
 ```
+Remove the separators on the start and the end for both strings.
 
 
-Put everything together. Save the URI encoded in the URL.
+
 ```JS
 return {
     areaElement: "<area shape=\"poly\" coords=\"" + coord + "\" alt=\"" + streetName.value + "\" href=\"" +  "/api/street-info/" + ( uri != undefined ? encodeURIComponent(uri.value) : "") + "\">", 
     svgElement: "<polygon fill=\"white\" stroke=\"white\" points=\"" + polylineCoord + "\"/>"};
 ```       
-
+Put everything together. Save the URI encoded in the URL.
 
 
 
@@ -87,8 +125,11 @@ browserify clientside_scripts/main.js -o public/scripts/bundle.js
 ```
 
 
-### Require modules
+### Modules that are required
 ```JS
 const imageLoader = require("./image-loading-feedback");
 const zeroState = require("./zero-state");
 ```
+
+* `image-loading-feedback.js` is used to show a spinner when the image is loading.
+* `zero-state.js` is used to show an extra zero state. (In progress)
