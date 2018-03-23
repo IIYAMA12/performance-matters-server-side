@@ -215,7 +215,7 @@ const mapManagement = {
 
                 polylineCoord = polylineCoord.trim();
                 coord = coord.slice(1, -1);
-                return {areaElement: "<area shape=\"poly\" coords=\"" + coord + "\" alt=\"" + streetName.value + "\" href=\"" +  "/api/street-info/" + ( uri != undefined ? encodeURIComponent(uri.value) : "") + "\">", svgElement: "<polygon fill=\"none\" stroke=\"white\" points=\"" + polylineCoord + "\"/>"};
+                return {areaElement: "<area shape=\"poly\" coords=\"" + coord + "\" alt=\"" + streetName.value + "\" href=\"" +  "/api/street-info/" + ( uri != undefined ? encodeURIComponent(uri.value) : "") + "\">", svgElement: "<polygon fill=\"white\" stroke=\"white\" points=\"" + polylineCoord + "\"/>"};
             }
 
         },
