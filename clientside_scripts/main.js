@@ -1,2 +1,2 @@
-const imageLoader = require("image-loading-feedback");
-const zeroState = require("zero-state");
+const imageLoader = require("./image-loading-feedback");
+const zeroState = require("./zero-state");
