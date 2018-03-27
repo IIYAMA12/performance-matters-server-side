@@ -1,0 +1,16 @@
+{
+  "name": "Map",
+  "short_name": "Map",
+  "description": null,
+  "dir": "auto",
+  "lang": "en-US",
+  "display": "standalone",
+  "start_url": "/?homescreen=1",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [{
+    "src": "/logo/logo.png",
+    "sizes": "100x100",
+    "type": "image/png"
+  }]
+}

@@ -1,4 +1,3 @@
-
 const express = require('express');
 const router = express.Router();
 const fetch = require("fetch");
@@ -6,8 +5,8 @@ const fetchUrl = fetch.fetchUrl;
 
 
 
-router.get("/street-info/:uri", function(req, res, next) {
-    
+router.get("/street-info/:uri", function (req, res, next) {
+
     const uri = req.params.uri;
     if (uri != undefined) {
         const sparqlquery = `
@@ -42,7 +41,7 @@ router.get("/street-info/:uri", function(req, res, next) {
 
 
         fetchUrl(queryurl, function (error, meta, body) {
-            
+
             if (error == undefined) {
                 const photosData = body.toString();
                 req.session.photosData = photosData;

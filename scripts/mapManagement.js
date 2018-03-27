@@ -215,96 +215,98 @@ const mapManagement = {
 
                 polylineCoord = polylineCoord.trim();
                 coord = coord.slice(1, -1);
-                return {areaElement: "<area shape=\"poly\" coords=\"" + coord + "\" alt=\"" + streetName.value + "\" href=\"" +  "/api/street-info/" + ( uri != undefined ? encodeURIComponent(uri.value) : "") + "\">", svgElement: "<polygon fill=\"white\" stroke=\"white\" points=\"" + polylineCoord + "\"/>"};
+                return {areaElement: "<area shape=\"poly\" coords=\"" + coord + "\" alt=\"" + streetName.value + "\" href=\"" +  "/?uri=" + ( uri != undefined ? encodeURIComponent(uri.value) : "") + "\">", svgElement: "<polygon fill=\"white\" stroke=\"white\" points=\"" + polylineCoord + "\"/>"};
             }
 
         },
         render (data) {
 
             const results = data.results;
-            const bindings = results.bindings;
+            if (results != undefined) {
+                const bindings = results.bindings;
 
 
 
 
-            const minSize = bindings.reduce(function (acc, cur, index) {
-                return Math.min(cur.size.value, acc );
-            }, Infinity);
+                const minSize = bindings.reduce(function (acc, cur, index) {
+                    return Math.min(cur.size.value, acc );
+                }, Infinity);
 
-            const maxSize = bindings.reduce(function (acc, cur, index) {
-                return Math.max(cur.size.value, acc );
-            }, -Infinity);
+                const maxSize = bindings.reduce(function (acc, cur, index) {
+                    return Math.max(cur.size.value, acc );
+                }, -Infinity);
 
-            const streetsData = [];
+                const streetsData = [];
 
-            for (let i = 0; i < bindings.length; i++) {
-                const binding = bindings[i];
-                if (binding.streetgeom != undefined) {
+                for (let i = 0; i < bindings.length; i++) {
+                    const binding = bindings[i];
+                    if (binding.streetgeom != undefined) {
 
-                    const size = binding.size.value;
-                    let street = binding.streetgeom.value;
-                    if (street != undefined) {
+                        const size = binding.size.value;
+                        let street = binding.streetgeom.value;
+                        if (street != undefined) {
 
-                        if (street.includes("MULTILINESTRING((") || street.includes("LINESTRING(")) {
+                            if (street.includes("MULTILINESTRING((") || street.includes("LINESTRING(")) {
 
-                            /////////////////////////
-                            // prepare for GEOJSON //
+                                /////////////////////////
+                                // prepare for GEOJSON //
 
-                            street = street.replace("MULTILINESTRING((", "");
-                            street = street.replace("LINESTRING(", "");
-                            street = street.replace(")", "");
-                            const pointsAsString  = street.split(",");
+                                street = street.replace("MULTILINESTRING((", "");
+                                street = street.replace("LINESTRING(", "");
+                                street = street.replace(")", "");
+                                const pointsAsString  = street.split(",");
 
 
-                            let points = pointsAsString.map(function (d) {
-                                const point = d.split(" ");
-                                point[0] = parseFloat(point[0]);
-                                point[1] = parseFloat(point[1]);
-                                return point;
-                            });
+                                let points = pointsAsString.map(function (d) {
+                                    const point = d.split(" ");
+                                    point[0] = parseFloat(point[0]);
+                                    point[1] = parseFloat(point[1]);
+                                    return point;
+                                });
 
-                            // check for corrupted points
-                            points = points.filter(function (d) {
-                                return typeof(d[0]) == "number" && !isNaN(d[0]) && typeof(d[1]) == "number" && !isNaN(d[1]);
-                            });
-                            
-                            const streetData = {};
-                            streetsData[streetsData.length] = streetData;
-                            
-                            if (binding.street != undefined)  {
-                                streetData.uri = binding.street;
+                                // check for corrupted points
+                                points = points.filter(function (d) {
+                                    return typeof(d[0]) == "number" && !isNaN(d[0]) && typeof(d[1]) == "number" && !isNaN(d[1]);
+                                });
+                                
+                                const streetData = {};
+                                streetsData[streetsData.length] = streetData;
+                                
+                                if (binding.street != undefined)  {
+                                    streetData.uri = binding.street;
+                                }
+
+                                streetData.streetName = binding.streetName;
+                                streetData.area = this.makeArea(points, streetData.streetName, streetData.uri );
+                                ////////////////
+                                // apply data //
+                                const layerId = "street:" + this.streetIndex;
+                                // console.log(layerId);
+                                streetData.id = layerId;
+                                this.streetIndex++;
+
+                                streetData.coordinates = points;
+                                
+                                // const factor = (size - minSize) / (maxSize - minSize);
+                                // dynamicObjects.paint["line-color"] = app.utility.rgbToHex(Math.floor(factor * 200), Math.floor((1 - factor) * 200), 0);
+
+                                
+
+                                // console.log(binding.street);
+
+
+                                if (binding.hasEarliestBeginTimeStamp != undefined)  {
+                                    streetData.hasEarliestBeginTimeStamp = binding.hasEarliestBeginTimeStamp; //
+                                }
+                                
+                            } else {
+                                console.error("Unknown geo data");
                             }
-
-                            streetData.streetName = binding.streetName;
-                            streetData.area = this.makeArea(points, streetData.streetName, streetData.uri );
-                            ////////////////
-                            // apply data //
-                            const layerId = "street:" + this.streetIndex;
-                            // console.log(layerId);
-                            streetData.id = layerId;
-                            this.streetIndex++;
-
-                            streetData.coordinates = points;
-                            
-                            // const factor = (size - minSize) / (maxSize - minSize);
-                            // dynamicObjects.paint["line-color"] = app.utility.rgbToHex(Math.floor(factor * 200), Math.floor((1 - factor) * 200), 0);
-
-                            
-
-                            // console.log(binding.street);
-
-
-                            if (binding.hasEarliestBeginTimeStamp != undefined)  {
-                                streetData.hasEarliestBeginTimeStamp = binding.hasEarliestBeginTimeStamp; //
-                            }
-                            
-                        } else {
-                            console.error("Unknown geo data");
                         }
                     }
                 }
+                return streetsData;
             }
-            return streetsData;
         }
     },
     utility: {

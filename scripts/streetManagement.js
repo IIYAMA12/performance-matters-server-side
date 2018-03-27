@@ -34,7 +34,7 @@ const streetManagement = {
                             subject =  "<p>Onderwerp: " + binding.subject.value + "</p>";
                         }
 
-                        if (binding.startYear != undefined && binding.startYear.value != undefined && binding.subject.type != "uri") {
+                        if (binding.startYear != undefined && binding.startYear.value != undefined && binding.startYear.type != "uri") {
                             startYear = "<p>Genomen op: <time>" + binding.startYear.value + "<time></p>";
                         }
 
@@ -48,8 +48,6 @@ const streetManagement = {
                         `;
                     }
                     return list;
-                } else {
-                    console.log("no bindings");
                 }
             }
         }

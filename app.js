@@ -7,6 +7,9 @@ const path = require("path"),
     streetManagement = require("./scripts/streetManagement")
 ;
 
+const fetch = require("fetch");
+const fetchUrl = fetch.fetchUrl;
+
 var sess = {
     secret: "xljOI#YXl`zizxgvisaki4ezln bs`yzld",
     cookie: {},
@@ -37,23 +40,84 @@ app.get("*", function(req, res, next)    {
 });
 
 
-app.get("/", function(req, res, next) {
+// app.get("/", function(req, res, next) {
 
-    const streetsData = mapManagement.map.render(mapManagement.map.data, req);
-    res.render("index", {
-            pageData:{ 
-                streetsData: streetsData,
-                photoData: streetManagement.render(req.session.photosData)
-            },
-        }
-    );
+
+// });
+
+
+app.get("/", function (req, res, next) {
+
+    console.log("??");
+    
+    
+    const uri = req.query.uri;//req.params.uri;
+    console.log("URI",uri);
+    
+    if (uri != undefined) {
+        const sparqlquery = `
+            PREFIX dct: <http://purl.org/dc/terms/>
+            PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+
+            SELECT ?item ?img ?creator ?subject ?startYear WHERE {
+                ?item dct:spatial <` + decodeURIComponent(uri) + `>  .
+                ?item foaf:depiction ?img .
+                optional {
+                    ?item <http://purl.org/dc/elements/1.1/creator> ?creator .
+                }
+                optional {
+                    ?item <http://purl.org/dc/elements/1.1/description> ?description .
+                }
+                optional {
+                    ?item <http://purl.org/dc/elements/1.1/subject> ?subject .
+                }
+                optional {
+                    ?item <http://semanticweb.cs.vu.nl/2009/11/sem/hasBeginTimeStamp> ?startYear .
+                }
+            }
+            ORDER BY DESC(?startYear)
+            LIMIT 100
+        `;
+
+
+
+        const encodedquery = encodeURIComponent(sparqlquery);
+
+        const queryurl = 'https://api.data.adamlink.nl/datasets/AdamNet/all/services/endpoint/sparql?default-graph-uri=&query=' + encodedquery + '&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on';
+
+
+        fetchUrl(queryurl, function (error, meta, body) {
+            if (error == undefined) {
+                const photosData = body.toString();
+                req.session.photosData = photosData;
+            }
+            const streetsData = mapManagement.map.render(mapManagement.map.data, req);
+            res.render("index", {
+                pageData:{ 
+                    streetsData: streetsData!= undefined ? streetsData : [],
+                    photoData: streetManagement.render(req.session.photosData)
+                },
+            });
+        });
+    } else {
+        console.log("render this");
+        
+        const streetsData = mapManagement.map.render(mapManagement.map.data, req);
+        res.render("index", {
+                pageData:{ 
+                    streetsData: streetsData != undefined ? streetsData : [],
+                    photoData: streetManagement.render(req.session.photosData)
+                },
+            }
+        );
+    }
 });
 
 // Define bodyparser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-app.use(express.static('public'));
+app.use(express.static("public"));
 
 
 // Routers
