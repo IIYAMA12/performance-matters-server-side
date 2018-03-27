@@ -54,7 +54,7 @@ console.log("sw start");
                 .then(response => response ? response : Promise.reject());
         },
         cachePage(request, response) { 
-            console.log("response", JSON.stringify(response);
+            console.log("response", JSON.stringify(response));
             
             const clonedResponse = response.clone();
             caches.open(serverWorker.version.get())
