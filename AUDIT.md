@@ -243,6 +243,8 @@ The `cache.put` method stores a value in the cache under a key. In this case it 
 
 ## Audit localhost
 
+
+
 <details>
     <summary>
         Audit: service-worker not installed
@@ -250,6 +252,16 @@ The `cache.put` method stores a value in the cache under a key. In this case it 
     <img alt="Audit no service-worker installed, part of image 1/2" src="https://raw.githubusercontent.com/IIYAMA12/performance-matters-server-side/master/readme-content/service-worker/no-audit-localhost1.png">
     <img alt="Audit no service-worker installed, part of image 2/2"  src="https://raw.githubusercontent.com/IIYAMA12/performance-matters-server-side/master/readme-content/service-worker/no-audit-localhost2.png">
 </details>
+
+#### Performance:
+First meaningful paint: 1480ms
+First Interactive (beta) 2450ms
+Consistently Interactive (beta) 2,450ms
+Perceptual Speed Index 3,124
+
+#### Progressive Web App
+55% (5/11)
+
 
 <details>
     <summary>
@@ -259,6 +271,16 @@ The `cache.put` method stores a value in the cache under a key. In this case it 
     <img alt="Audit install service-worker, part of image 2/2"  src="https://raw.githubusercontent.com/IIYAMA12/performance-matters-server-side/master/readme-content/service-worker/audit-install2.png">
 </details>
 
+#### Performance:
+First meaningful paint: 1520ms
+First Interactive (beta) 2440ms
+Consistently Interactive (beta) 2,440ms
+Perceptual Speed Index 3,175
+
+#### Progressive Web App
+82% (2/11)
+
+
 <details>
     <summary>
         Audit: service-worker is already installed
@@ -266,6 +288,16 @@ The `cache.put` method stores a value in the cache under a key. In this case it 
     <img alt="Audit service-worker already installed, part of image 1/2" src="https://raw.githubusercontent.com/IIYAMA12/performance-matters-server-side/master/readme-content/service-worker/audit-installed1.png">
     <img alt="Audit service-worker already installed, part of image 2/2"  src="https://raw.githubusercontent.com/IIYAMA12/performance-matters-server-side/master/readme-content/service-worker/audit-installed2.png">
 </details>
+
+#### Performance:
+First meaningful paint: 1330ms
+First Interactive (beta) 2510ms
+Consistently Interactive (beta) 2,510ms
+Perceptual Speed Index 3,075
+
+#### Progressive Web App
+82% (2/11)
+
 
 #### Why not test with `ngrok` instead?
 ![Google Chrome doesn't like my service-worker incombination with ngrok](ngrok-service-worker-not-working.png)
