@@ -2,7 +2,8 @@
 
 ## Manifest
 
-The manifest is a file which includes information about the website you are going to cache. Which helps
+The manifest is a file which includes information about the website you are going to cache. It is like a kind of meta.xml or condig.xml file, which contains the main/global information.
+
 ```JSON
 {
   "name": "Map",
@@ -254,13 +255,13 @@ The `cache.put` method stores a value in the cache under a key. In this case it 
 </details>
 
 #### Performance:
-First meaningful paint: 1480ms
-First Interactive (beta) 2450ms
-Consistently Interactive (beta) 2,450ms
-Perceptual Speed Index 3,124
+* First meaningful paint: 1480ms
+* First Interactive (beta) 2450ms
+* Consistently Interactive (beta) 2,450ms
+* Perceptual Speed Index 3,124
 
 #### Progressive Web App
-55% (5/11)
+* 55% (5/11)
 
 
 <details>
@@ -272,13 +273,13 @@ Perceptual Speed Index 3,124
 </details>
 
 #### Performance:
-First meaningful paint: 1520ms
-First Interactive (beta) 2440ms
-Consistently Interactive (beta) 2,440ms
-Perceptual Speed Index 3,175
+* First meaningful paint: 1520ms
+* First Interactive (beta) 2440ms
+* Consistently Interactive (beta) 2,440ms
+* Perceptual Speed Index 3,175
 
 #### Progressive Web App
-82% (2/11)
+* 82% (2/11)
 
 
 <details>
@@ -290,13 +291,13 @@ Perceptual Speed Index 3,175
 </details>
 
 #### Performance:
-First meaningful paint: 1330ms
-First Interactive (beta) 2510ms
-Consistently Interactive (beta) 2,510ms
-Perceptual Speed Index 3,075
+* First meaningful paint: 1330ms
+* First Interactive (beta) 2510ms
+* Consistently Interactive (beta) 2,510ms
+* Perceptual Speed Index 3,075
 
 #### Progressive Web App
-82% (2/11)
+* 82% (2/11)
 
 
 #### Why not test with `ngrok` instead?
