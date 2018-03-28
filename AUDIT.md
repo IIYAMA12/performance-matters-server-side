@@ -33,8 +33,77 @@ Manifest requires minimal to be accepted by lighthouse:
 * A display property with the values standalone, fullscreen, or minimal-ui
 * An icon that is minimal 192px width and height.
 [Requirements](https://developers.google.com/web/tools/lighthouse/audits/install-prompt)
+## Installing service worker
 
-## Fetch the incoming URL's.
+
+```JS
+self.addEventListener("install", serverWorker.eventFunctions.install);
+```
+
+[install / oninstall](https://developer.mozilla.org/en-US/docs/Web/API/InstallEvent)
+Listen to the installation `start` of itself. (not when it finished)
+
+```JS
+// {
+    install (e) {
+        e.waitUntil(
+            caches.open(serverWorker.version.get())
+            .then(cache => cache.add(
+                "/offline/offline.html"
+            ))
+            .then(self.skipWaiting())
+        );
+    },
+// }
+```
+
+When the install event triggers, it will give an installEvent back in to the first parameter.
+
+---
+
+#### Syntax `event.activeWorker`
+
+```JS
+const myActiveWorker = event.activeWorker
+```
+It has a property `activeWorker`, which contains the service worker object.
+[ServiceWorker](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorker)
+
+
+---
+
+#### ExtendableEvent
+
+The install event seems to contain the ExtendableEvent method, which is used to ensure that the objeect doesn't get destroyed inside of the function scope. It is saved in to the Global scope as a part of the service worker `lifecycle`. For more information: [ExtendableEvent](https://developer.mozilla.org/en-US/docs/Web/API/ExtendableEvent)
+
+
+#### Syntax `event.waitUntil`
+
+```JS
+event.waitUntil(promise)
+```
+
+[event.waitUntil](https://developer.mozilla.org/en-US/docs/Web/API/ExtendableEvent/waitUntil)
+
+This method tells the event that the work is ongoing. It can also detect when work has been done successfully. When it is used for service workers, the `waitUntil` method tells the browser that the work is not ended until the promise is finished. I am not sure if I am correct, but I think it keeps waiting until everything is done before cleaning up the event data.
+
+
+#### Syntax `ServiceWorkerGlobalScope.skipWaiting`
+```JS
+ServiceWorkerGlobalScope.skipWaiting().then(function() {
+
+});
+```
+[ServiceWorkerGlobalScope.skipWaiting](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerGlobalScope/skipWaiting)
+The skipWaiting method is use to force the service worker to become active.
+
+
+## Fetch and caching the incoming URL's + data.
+
+```JS
+self.addEventListener("fetch", serverWorker.eventFunctions.fetch);
+```
+Listen for incoming requests.
 
 ```JS
 // {

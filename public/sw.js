@@ -5,7 +5,7 @@ console.log("sw start");
         
         init() {
             self.addEventListener("install", serverWorker.eventFunctions.install);
-            self.addEventListener("fetch", serverWorker.eventFunctions.fetch)
+            self.addEventListener("fetch", serverWorker.eventFunctions.fetch);
         },
         version: {
             versionValue: "1.0.0",
@@ -21,9 +21,9 @@ console.log("sw start");
                 
                 e.waitUntil(
                     caches.open(serverWorker.version.get())
-                    .then(cache => cache.addAll([
-                        "/offline/offline.html",
-                    ]))
+                    .then(cache => cache.addAll(
+                        "/offline/offline.html"
+                    ))
                     .then(self.skipWaiting())
                 );
             },
