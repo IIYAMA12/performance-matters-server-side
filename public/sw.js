@@ -32,7 +32,7 @@ console.log("sw start");
                 
                
                 const request = e.request;
-                if (request.mode === "navigate") {
+                if (request.mode === "navigate"  ) { // || request.url .jpg 
                     
                     e.respondWith(
                         fetch(request)
