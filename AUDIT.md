@@ -241,10 +241,33 @@ cache.put(request, response).then(function() {
 
 The `cache.put` method stores a value in the cache under a key. In this case it is the `request` as `key` and the `response` as `value`. When the `then` method is called, the value is stored successfully.
 
-## Audit
+## Audit localhost
 
 <details>
     <summary>
-        
+        Audit: service-worker not installed
     </summary>
+    <img alt="Audit no service-worker installed, part of image 1/2" src="https://raw.githubusercontent.com/IIYAMA12/performance-matters-server-side/master/readme-content/service-worker/no-audit-localhost1.png">
+    <img alt="Audit no service-worker installed, part of image 2/2"  src="https://raw.githubusercontent.com/IIYAMA12/performance-matters-server-side/master/readme-content/service-worker/no-audit-localhost2.png">
 </details>
+
+<details>
+    <summary>
+        Audit: Installing service-worker
+    </summary>
+    <img alt="Audit install service-worker, part of image 1/2" src="https://raw.githubusercontent.com/IIYAMA12/performance-matters-server-side/master/readme-content/service-worker/audit-install1.png">
+    <img alt="Audit install service-worker, part of image 2/2"  src="https://raw.githubusercontent.com/IIYAMA12/performance-matters-server-side/master/readme-content/service-worker/audit-install2.png">
+</details>
+
+<details>
+    <summary>
+        Audit: service-worker is already installed
+    </summary>
+    <img alt="Audit service-worker already installed, part of image 1/2" src="https://raw.githubusercontent.com/IIYAMA12/performance-matters-server-side/master/readme-content/service-worker/audit-installed1.png">
+    <img alt="Audit service-worker already installed, part of image 2/2"  src="https://raw.githubusercontent.com/IIYAMA12/performance-matters-server-side/master/readme-content/service-worker/audit-installed2.png">
+</details>
+
+#### Why not test with `ngrok` instead?
+![Google Chrome doesn't like my service-worker incombination with ngrok](ngrok-service-worker-not-working.png)
+
+Google Chrome doesn't let me... GRRRRRaudit
