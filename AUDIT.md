@@ -300,6 +300,6 @@ Perceptual Speed Index 3,075
 
 
 #### Why not test with `ngrok` instead?
-![Google Chrome doesn't like my service-worker incombination with ngrok](ngrok-service-worker-not-working.png)
+![Google Chrome doesn't like my service-worker incombination with ngrok](readme-content/service-worker/ngrok-service-worker-not-working.png)
 
 Google Chrome doesn't let me... GRRRRRaudit
