@@ -99,6 +99,10 @@ if (request.mode === "navigate" ||  (possibleExtension != undefined && acceptabl
 
 The `respondWith` method is used to prevent the browser it's default fetching behaviour. It gives you the ability to attach a promise to it, so that you can do the behaviour manually.
 
+---
+
+#### fetchCoreFile function/method
+
 ```JS
 // {
     fetchCoreFile(url) {
@@ -109,17 +113,11 @@ The `respondWith` method is used to prevent the browser it's default fetching be
 // }
 ```
 
-#### Syntax `cache.match`
-```JS
-cache.match(request, {options}).then(function(response) {
+This function/method makes use of the methods below and is used to get data from the cache.
 
-});
-```
-[cache.match](https://developer.mozilla.org/en-US/docs/Web/API/Cache/match)
+---
 
-With the `cache.match()` method you can receive the data you have stored in your cache. It has requires one argument to be able to use, which is the `request` / key. There is also an optional argument options, which requires an object that contains information how you are going to match with your cache. For now(2018-03-28) it supports: `ignoreSearch`, `ignoreMethod`, `ignoreVary` and `cacheName`.
-
-
+#### cachePage function/method
 
 ```JS
 // {
@@ -132,8 +130,21 @@ With the `cache.match()` method you can receive the data you have stored in your
 // }
 ```
 
-This function makes use of the methods below and is used to save data in the cache. The name of the function references to cache pages, but in my edited example I am also caching images(png/jpg/gif). So I probably have to rename it to cacheFile instead later on.
+This function/method makes use of the methods below and is used to save data in the cache. The name of the function references to cache pages, but in my edited example I am also caching images(png/jpg/gif). So I probably have to rename it to cacheFile instead later on.
 
+---
+
+#### Syntax `cache.match`
+```JS
+cache.match(request, {options}).then(function(response) {
+
+});
+```
+[cache.match](https://developer.mozilla.org/en-US/docs/Web/API/Cache/match)
+
+With the `cache.match()` method you can receive the data you have stored in your cache. It has requires one argument to be able to use, which is the `request` / key. There is also an optional argument options, which requires an object that contains information how you are going to match with your cache. For now(2018-03-28) it supports: `ignoreSearch`, `ignoreMethod`, `ignoreVary` and `cacheName`.
+
+---
 
 #### Syntax `caches.open`
 ```JS
@@ -141,8 +152,14 @@ caches.open(cacheName).then(function(cache) {
     // the cache is now open and available
 });
 ```
+[caches.open](https://developer.mozilla.org/en-US/docs/Web/API/CacheStorage/open)
 
 This method gives you access to a requested cache. Once the promise is successfull, it will return the cache to you with `then`. It is located in the first parameter. 
+
+The `caches` is a global and readonly variable, which comes from the `CacheStorage`.
+[caches](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/caches)
+
+---
 
 #### Syntax `cache.put` 
 ```JS
