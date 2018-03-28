@@ -4,6 +4,7 @@ console.log("sw start");
     const serverWorker = {
         
         init() {
+            console.log("init?");
             self.addEventListener("install", serverWorker.eventFunctions.install);
             self.addEventListener("fetch", serverWorker.eventFunctions.fetch);
         },
@@ -18,12 +19,13 @@ console.log("sw start");
         },
         eventFunctions: {
             install (e) {
+                console.log("works?");
                 
                 e.waitUntil(
                     caches.open(serverWorker.version.get())
-                    .then(cache => cache.addAll(
+                    .then(cache => cache.addAll([
                         "/offline/offline.html"
-                    ))
+                    ]))
                     .then(self.skipWaiting())
                 );
             },

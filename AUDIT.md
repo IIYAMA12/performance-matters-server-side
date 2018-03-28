@@ -240,3 +240,11 @@ cache.put(request, response).then(function() {
 [cache.put](https://developer.mozilla.org/en-US/docs/Web/API/Cache/put)
 
 The `cache.put` method stores a value in the cache under a key. In this case it is the `request` as `key` and the `response` as `value`. When the `then` method is called, the value is stored successfully.
+
+## Audit
+
+<details>
+    <summary>
+        
+    </summary>
+</details>
