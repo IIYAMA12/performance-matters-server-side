@@ -5,12 +5,16 @@
   "dir": "auto",
   "lang": "en-US",
   "display": "standalone",
-  "start_url": "/?homescreen=1",
+  "start_url": ".",
   "background_color": "#000000",
   "theme_color": "#000000",
   "icons": [{
     "src": "/logo/logo.png",
     "sizes": "100x100",
+    "type": "image/png"
+  },{
+    "src": "/logo/logo.png",
+    "sizes": "200x200",
     "type": "image/png"
   }]
 }

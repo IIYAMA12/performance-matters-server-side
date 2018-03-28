@@ -4,7 +4,6 @@ console.log("sw start");
     const serverWorker = {
         
         init() {
-            
             self.addEventListener("install", serverWorker.eventFunctions.install);
             self.addEventListener("fetch", serverWorker.eventFunctions.fetch)
         },
@@ -29,10 +28,18 @@ console.log("sw start");
                 );
             },
             fetch (e) {
-                
-               
                 const request = e.request;
-                if (request.mode === "navigate"  ) { // || request.url .jpg 
+                const requestURL = request.url;
+                const splittedURL = requestURL.split(".");
+                const possibleExtension = splittedURL[splittedURL.length - 1];
+                const acceptableExtensions = {
+                    "png": true,
+                    "jpg": true,
+                    "gif": true
+                };
+                console.log("possibleExtension", possibleExtension, "requestURL", requestURL);
+                
+                if (request.mode === "navigate" ||  (possibleExtension != undefined && acceptableExtensions[possibleExtension])) { // || request.url .jpg 
                     
                     e.respondWith(
                         fetch(request)
@@ -48,14 +55,11 @@ console.log("sw start");
             }
         },
         fetchCoreFile(url) {
-            
             return caches.open(serverWorker.version.get())
                 .then(cache => cache.match(url))
                 .then(response => response ? response : Promise.reject());
         },
         cachePage(request, response) { 
-            console.log("response", JSON.stringify(response));
-            
             const clonedResponse = response.clone();
             caches.open(serverWorker.version.get())
                 .then(cache => cache.put(request, clonedResponse));
