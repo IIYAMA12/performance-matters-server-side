@@ -69,13 +69,13 @@ const myActiveWorker = event.activeWorker
 It has a property `activeWorker`, which contains the service worker object.
 [ServiceWorker](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorker)
 
-
 ---
 
 #### ExtendableEvent
 
 The install event seems to contain the ExtendableEvent method, which is used to ensure that the objeect doesn't get destroyed inside of the function scope. It is saved in to the Global scope as a part of the service worker `lifecycle`. For more information: [ExtendableEvent](https://developer.mozilla.org/en-US/docs/Web/API/ExtendableEvent)
 
+---
 
 #### Syntax `event.waitUntil`
 
@@ -87,6 +87,7 @@ event.waitUntil(promise)
 
 This method tells the event that the work is ongoing. It can also detect when work has been done successfully. When it is used for service workers, the `waitUntil` method tells the browser that the work is not ended until the promise is finished. I am not sure if I am correct, but I think it keeps waiting until everything is done before cleaning up the event data.
 
+---
 
 #### Syntax `ServiceWorkerGlobalScope.skipWaiting`
 ```JS
@@ -154,7 +155,7 @@ const acceptableExtensions = {
 if (request.mode === "navigate" ||  (possibleExtension != undefined && acceptableExtensions[possibleExtension])) {
 ```
 
-3. Get the file from th
+3. Fetch the request. If successfull then cache the file. If failed then try to get it from the cache.
 
 ```JS
     e.respondWith(
