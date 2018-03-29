@@ -308,6 +308,10 @@ The `cache.put` method stores a value in the cache under a key. In this case it 
 Google Chrome doesn't let me... GRRRRRaudit
 
 
+![Possible solution](readme-content/service-worker/possible-solution.png)
+I tried this to solve the issue, but unfortunately not working.
+
+
 ## Understanding/debugging the incoming data.
 
 
