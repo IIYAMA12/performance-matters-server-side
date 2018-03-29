@@ -40,11 +40,18 @@ app.get("*", function(req, res, next)    {
 });
 
 
-// app.get("/", function(req, res, next) {
+// Define bodyparser
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
+app.use(express.static("public"));
 
 
-// });
 
+app.post("/log", function (req, res, next) {
+    console.log("req.body", req.body);
+    next();
+});
 
 app.get("/", function (req, res, next) {
 
@@ -113,11 +120,7 @@ app.get("/", function (req, res, next) {
     }
 });
 
-// Define bodyparser
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
 
-app.use(express.static("public"));
 
 
 // Routers

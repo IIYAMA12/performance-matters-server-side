@@ -304,3 +304,70 @@ The `cache.put` method stores a value in the cache under a key. In this case it 
 ![Google Chrome doesn't like my service-worker incombination with ngrok](readme-content/service-worker/ngrok-service-worker-not-working.png)
 
 Google Chrome doesn't let me... GRRRRRaudit
+
+
+## Understanding/debugging the incoming data.
+
+
+
+#### Service-worker
+```JS
+fetch("/log", {
+    body: request.url, // must match 'Content-Type' header
+    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: 'same-origin', // include, same-origin, *omit
+    headers: {
+        'user-agent': 'Mozilla/4.0 MDN Example',
+        'content-type': 'application/x-www-form-urlencoded'
+    },
+    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    mode: 'cors', // no-cors, cors, *same-origin
+    redirect: 'follow', // *manual, follow, error
+    referrer: 'no-referrer', // *client, no-referrer
+});
+```
+[MDN using fetch API with posting](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)
+
+
+#### App (node.js)
+```JS
+app.post("/log", function (req, res, next) {
+    console.log("req.body", req.body);
+    next();
+});
+```
+
+
+The problem with the webbrowser console is that you will lose some of your service-worker logs. So thought it was handy to debug the logs. First I tried to use XMLHttpRequest, but it seems it is removed and replaced with the fetch function.  
+To send the logs I use the POST method to. After my first attempt I noticed that the type of content was URL, it didn't wanted to be send even thought it was stringified. So I decided to stop using the content type(JSON) `content-type': 'application/json'` and use the content type (URL) 
+`application/x-www-form-urlencoded` instead.
+
+
+[Content-type for URL](https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data)
+
+![First send files](readme-content/service-worker/first-send.png)
+Requested files on visit.
+
+![First send files](readme-content/service-worker/first-send.png)
+Requested files after clicking a street with content.
+
+
+## Service-worker cache version control
+
+```JS
+// {
+    version: {
+        versionValue: "1.0.0",
+        get () {
+            return this.versionValue;
+        },
+        set (version) {
+            this.versionValue = version;
+        }
+    }
+// }
+```
+
+It is very important that there will be a moment that some content gets old. So I thought it might be handy to add something to control the cache version. After creatin this, I still have no idea what the best approach is to maintain this. But I will figure it out!
+
+
