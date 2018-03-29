@@ -111,22 +111,33 @@ Listen for incoming requests.
 
 ```JS
 // {
-   fetch (e) {
-        const request = e.request;
+fetch (e) {
+    const request = e.request;
+
+    serverWorker.log.url(request.url);
+
+    if (request.mode === "navigate") {  
+        e.respondWith(
+            fetch(request)
+                .then(response => serverWorker.cacheFile(request, response))
+                .catch(err => serverWorker.fetchCoreFile(request.url))
+                .catch(err => fetchCoreFile("/offline/offline.html"))
+        );
+    } else {
         const requestURL = request.url;
         const splittedURL = requestURL.split(".");
         const possibleExtension = splittedURL[splittedURL.length - 1];
         const acceptableExtensions = {
             "png": true,
             "jpg": true,
-            "gif": true
+            "gif": true,
+            "css": true,
+            "js": true
         };
-        
-        if (request.mode === "navigate" ||  (possibleExtension != undefined && acceptableExtensions[possibleExtension])) { // || request.url .jpg 
-            
+        if (possibleExtension != undefined && acceptableExtensions[possibleExtension]) { 
             e.respondWith(
                 fetch(request)
-                    .then(response => serverWorker.cachePage(request, response))
+                    .then(response => serverWorker.cacheFile(request, response))
                     .catch(err => serverWorker.fetchCoreFile(request.url))
             );
         } else {
@@ -136,6 +147,7 @@ Listen for incoming requests.
             );
         }
     }
+}
 // }
 ```
 
@@ -152,10 +164,20 @@ const possibleExtension = splittedURL[splittedURL.length - 1];
 const acceptableExtensions = {
     "png": true,
     "jpg": true,
-    "gif": true
+    "gif": true,
+    "css": true,
+    "js": true
 };
 
-if (request.mode === "navigate" ||  (possibleExtension != undefined && acceptableExtensions[possibleExtension])) {
+if (request.mode === "navigate") {  
+    //  main content
+} else {
+    if (possibleExtension != undefined && acceptableExtensions[possibleExtension]) { 
+        // external files
+    } else {
+        //  any thing else which shouldn't be cached
+    }
+}
 ```
 
 3. Fetch the request. If successfull then cache the file. If failed then try to get it from the cache.
@@ -163,7 +185,7 @@ if (request.mode === "navigate" ||  (possibleExtension != undefined && acceptabl
 ```JS
     e.respondWith(
         fetch(request)
-            .then(response => serverWorker.cachePage(request, response))
+            .then(response => serverWorker.cacheFile(request, response))
             .catch(err => serverWorker.fetchCoreFile(request.url))
     );
 ```
@@ -190,11 +212,11 @@ This function/method makes use of the methods below and is used to get data from
 
 ---
 
-#### cachePage function/method
+#### cacheFile function/method
 
 ```JS
 // {
-    cachePage(request, response) { 
+    cacheFile(request, response) { 
         const clonedResponse = response.clone();
         caches.open(serverWorker.version.get())
             .then(cache => cache.put(request, clonedResponse));
@@ -203,7 +225,7 @@ This function/method makes use of the methods below and is used to get data from
 // }
 ```
 
-This function/method makes use of the methods below and is used to save data in the cache. The name of the function references to cache pages, but in my edited example I am also caching images(png/jpg/gif). So I probably have to rename it to cacheFile instead later on.
+This function/method makes use of the methods below and is used to save data in the cache. The previous name of this function was cachePage, but because I am also using it for caching other files, it is changed to cacheFile.
 
 ---
 
