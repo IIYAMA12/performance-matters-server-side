@@ -98,10 +98,7 @@ const mapManagement = {
 
                 fetchUrl(queryurl, function (error, meta, body) {
                     if (error == undefined) {
-                        // console.log(body, body.toString();
-                        // body = JSON.parse(body);
-                        // console.log(body);
-                        // mapManagement.map.render(JSON.parse(body.toString())); mapManagement.map.render();
+                        // Store the map data of a selected area.
                         mapManagement.map.data = JSON.parse(body.toString());
                     } else {
                         console.log("Error: fetchURL failed");
@@ -112,25 +109,16 @@ const mapManagement = {
                 
             },
             map () {
-                // this.mapBox.accessToken = "pk.eyJ1IjoiaWl5YW1hIiwiYSI6ImNqZWZxM3AwOTFoMTgycXBrZWo5NGF6eWoifQ.8bABDvjASinWudt00f0Oxg";
-                // console.log("make map melement", this);
-                // this.map.element = new this.mapBox({
-                //     container: 'map',
-                //     // style: 'mapbox://styles/mapbox/dark-v9',
-                //     style: "mapbox://styles/iiyama/cjehnbdnk33n52rqwj0q1xtkj",
-                //     center: [4.899431, 52.379189],
-                //     zoom: 14
-                // });
-                // this.map.element.addControl(new MapboxGeocoder({
-                //     accessToken: this.mapBox.accessToken
-                // }));
+                // Might be used in a next version, for remapping the data. (expansion)
             }
         },
 
+        // Filter the data on size. The sparql would be able to filter this as well, but it created some unknown issues with the st_may_intersect method. This method is used to check if a street might be close enough to a point. So I had to do it manually in Node.js.
         filter (data) {
             const results = data.results;
             let bindings = results.bindings;
 
+            // Check if the values are correct.
             bindings = bindings.filter(function (d) {
                 if (d != undefined && d.size != undefined && d.size.value != undefined) {
                     return true;
@@ -138,21 +126,31 @@ const mapManagement = {
                 return false;
             });
 
+            // Filter on streetsize size
             bindings = bindings.filter(function (d) {
                 return d.size.value < 0.006;
             });
 
+            // restore the edited bindings
             results.bindings = bindings;
+
             return data;
         },
         
         makeArea (points, streetName, uri) {
-            // image size: 782 × 855
+            /* 
+                image size: 782 × 855 
+                This is very important information for mapping the area tags on the image. 
+                The problem with area HTML tags is that, they can't be scaled without JavaScript.
+            */
             const 
                 imageX = 782,
                 imageY = 855
             ;
             
+            /*
+                The documentation of the code below can be found inside of the readme.md
+            */
             let coord = ",";
             let polylineCoord = " ";
             
@@ -164,7 +162,7 @@ const mapManagement = {
 
             const coordBoundingSizeX = coordBoundingMaxX - coordBoundingMinX
             const coordBoundingSizeY = coordBoundingMaxY  - coordBoundingMinY
-            // console.log(coordBoundingSizeX, coordBoundingSizeY);
+            
             for (let i = 0; i < points.length; i++) {
                 const point = points[i];
                 const nextPoint = points[i + 1];
@@ -215,6 +213,8 @@ const mapManagement = {
 
                 polylineCoord = polylineCoord.trim();
                 coord = coord.slice(1, -1);
+
+                // Prepare the two elements per street. area HTML tag for making the street click able and the SVG polygon for showing the visual representation.
                 return {areaElement: "<area shape=\"poly\" coords=\"" + coord + "\" alt=\"" + streetName.value + "\" href=\"" +  "/?uri=" + ( uri != undefined ? encodeURIComponent(uri.value) : "") + "\">", svgElement: "<polygon fill=\"white\" stroke=\"white\" points=\"" + polylineCoord + "\"/>"};
             }
 
@@ -226,15 +226,19 @@ const mapManagement = {
                 const bindings = results.bindings;
 
 
+                //////////////////////////////
+                // get the max and min size //
 
+                // This code was used to find the min and max sizes of the streets and apply a color range for it. This code might be re-used in future versions.
+                /*
+                    const minSize = bindings.reduce(function (acc, cur, index) {
+                        return Math.min(cur.size.value, acc );
+                    }, Infinity);
 
-                const minSize = bindings.reduce(function (acc, cur, index) {
-                    return Math.min(cur.size.value, acc );
-                }, Infinity);
-
-                const maxSize = bindings.reduce(function (acc, cur, index) {
-                    return Math.max(cur.size.value, acc );
-                }, -Infinity);
+                    const maxSize = bindings.reduce(function (acc, cur, index) {
+                        return Math.max(cur.size.value, acc );
+                    }, -Infinity);
+                */
 
                 const streetsData = [];
 
@@ -256,51 +260,42 @@ const mapManagement = {
                                 street = street.replace(")", "");
                                 const pointsAsString  = street.split(",");
 
-
+                                // convert points as string to points as numbers in to an array
                                 let points = pointsAsString.map(function (d) {
                                     const point = d.split(" ");
-                                    point[0] = parseFloat(point[0]);
+                                    point[0] = parseFloat(point[0]); //  Using parseFloat makes sure that the numbers aren't rounded.
                                     point[1] = parseFloat(point[1]);
                                     return point;
                                 });
 
-                                // check for corrupted points
-                                points = points.filter(function (d) {
-                                    return typeof(d[0]) == "number" && !isNaN(d[0]) && typeof(d[1]) == "number" && !isNaN(d[1]);
-                                });
-                                
-                                const streetData = {};
-                                streetsData[streetsData.length] = streetData;
-                                
-                                if (binding.street != undefined)  {
-                                    streetData.uri = binding.street;
-                                }
+                                    // check for corrupted points
+                                    points = points.filter(function (d) {
+                                        return typeof(d[0]) == "number" && !isNaN(d[0]) && typeof(d[1]) == "number" && !isNaN(d[1]);
+                                    });
+                                    
+                                    const streetData = {};
+                                    streetsData[streetsData.length] = streetData;
+                                    
+                                    if (binding.street != undefined)  {
+                                        streetData.uri = binding.street;
+                                    }
 
                                 streetData.streetName = binding.streetName;
                                 streetData.area = this.makeArea(points, streetData.streetName, streetData.uri );
+                            
                                 ////////////////
                                 // apply data //
                                 const layerId = "street:" + this.streetIndex;
-                                // console.log(layerId);
+
                                 streetData.id = layerId;
                                 this.streetIndex++;
 
                                 streetData.coordinates = points;
-                                
-                                // const factor = (size - minSize) / (maxSize - minSize);
-                                // dynamicObjects.paint["line-color"] = app.utility.rgbToHex(Math.floor(factor * 200), Math.floor((1 - factor) * 200), 0);
-
-                                
-
-                                // console.log(binding.street);
-
+                            
 
                                 if (binding.hasEarliestBeginTimeStamp != undefined)  {
-                                    streetData.hasEarliestBeginTimeStamp = binding.hasEarliestBeginTimeStamp; //
+                                    streetData.hasEarliestBeginTimeStamp = binding.hasEarliestBeginTimeStamp;
                                 }
-                                
-                            } else {
-                                console.error("Unknown geo data");
                             }
                         }
                     }
