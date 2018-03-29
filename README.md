@@ -1,5 +1,7 @@
 # performance-matters-server-side
 
+This is a website which uses a click able map to show street images.
+
 [Service-worker](AUDIT.md)
 
 ## Routers
