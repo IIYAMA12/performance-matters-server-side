@@ -1,31 +1,34 @@
+/*
+    This file is used to display/create the side information about the selected street.
+*/
 const streetManagement = {
     render (data) {
-        // console.log("data", data);
         
         if (data != undefined) {            
             const results = JSON.parse(data).results;
             
             if (results != undefined) {
+
+                // bindings key is used to get the attached data to the URI request. Bindings from: binded data from the URI.
                 const bindings = results.bindings;
-                // console.log(bindings, bindings.length);
                 
                 if (bindings.length > 0) {
 
                     let list = "";
 
                     // mobile only
-                    dialogBindings = bindings;
+                    // dialogBindings = bindings;
 
                     for (let i = 0; i < bindings.length; i++) {
                         const binding = bindings[i];
 
-
+                        // set the default values
                         let figcaption = "";
                         let subject = "";
                         let startYear = "";
 
 
-
+                        //  If the data exist, create the elements for it.
                         if (binding.creator != undefined && binding.creator.value != undefined) {
                             figcaption = "<figcaption>Auteur: " + binding.creator.value + "</figcaption>"
                         }
@@ -37,7 +40,7 @@ const streetManagement = {
                         if (binding.startYear != undefined && binding.startYear.value != undefined && binding.startYear.type != "uri") {
                             startYear = "<p>Genomen op: <time>" + binding.startYear.value + "<time></p>";
                         }
-
+                        
                         list += `
                             <li id = "` + "image-information-" + i + `">
                                 <figure>
