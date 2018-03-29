@@ -1,5 +1,7 @@
 # Service worker
 
+It is a piece of Javascript which gets stored/installed on your computer. After going offline, the webapplication should still behave as a live website based on URL and stored content in to the service-worker caches. Personaly I would describe it as the next level caching of websites.
+
 ## Manifest
 
 The manifest is a file which includes information about the website you are going to cache. It is like a kind of meta.xml or condig.xml file, which contains the main/global information.
@@ -340,7 +342,7 @@ app.post("/log", function (req, res, next) {
 
 The problem with the webbrowser console is that you will lose some of your service-worker logs. So thought it was handy to debug the logs. First I tried to use XMLHttpRequest, but it seems it is removed and replaced with the fetch function.  
 To send the logs I use the POST method to. After my first attempt I noticed that the type of content was URL, it didn't wanted to be send even thought it was stringified. So I decided to stop using the content type(JSON) `content-type': 'application/json'` and use the content type (URL) 
-`application/x-www-form-urlencoded` instead.
+`application/x-www-form-urlencoded` instead. (even though I am sure that if I applied it correctly inside of the JSON, it might have been succeeded, but since it is only a URL, this method might be more performance wise.)
 
 
 [Content-type for URL](https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data)
@@ -368,6 +370,6 @@ Requested files after clicking a street with content.
 // }
 ```
 
-It is very important that there will be a moment that some content gets old. So I thought it might be handy to add something to control the cache version. After creatin this, I still have no idea what the best approach is to maintain this. But I will figure it out!
+It is very important to know that there will be a moment that some content gets old. So I thought it might be handy to add something to control the cache version. After creating this, I still have no idea what the best approach is to maintain this. But I will figure it out!
 
 
