@@ -45,20 +45,22 @@
             </footer>
         </section>
         <article id="map-information" class="mobile-information-hidden">
-            <%# Show information about the streets. %>
-            <%
-                if (pageData.photoData != undefined) {
-            %>
-            <%-     
-                pageData.photoData
-            %>
-            <%
-                } else {
-            %>
-                <p>No photo information available on this street!</p>
-            <%
-                }
-            %>
+            <ul>
+                <%# Show information about the streets. %>
+                <%
+                    if (pageData.photoData != undefined) {
+                %>
+                <%-     
+                    pageData.photoData
+                %>
+                <%
+                    } else {
+                %>
+                    <p>No photo information available on this street!</p>
+                <%
+                    }
+                %>
+            </ul>
         </article>
     </main>
 </body>
