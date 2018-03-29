@@ -2,6 +2,8 @@
 
 It is a piece of Javascript which gets stored/installed on your computer. After going offline, the webapplication should still behave as a live website based on URL and stored content in to the service-worker caches. Personaly I would describe it as the next level caching of websites.
 
+`I want to use the map website when my internet fails!`
+
 ## Manifest
 
 The manifest is a file which includes information about the website you are going to cache. It is like a kind of meta.xml or condig.xml file, which contains the main/global information.
@@ -175,7 +177,7 @@ if (request.mode === "navigate") {
     if (possibleExtension != undefined && acceptableExtensions[possibleExtension]) { 
         // external files
     } else {
-        //  any thing else which shouldn't be cached
+        //  anything else which shouldn't be cached
     }
 }
 ```
