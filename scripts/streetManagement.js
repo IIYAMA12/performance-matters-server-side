@@ -50,7 +50,7 @@ const streetManagement = {
                             </li>
                         `;
                     }
-                    return list;
+                    return "<ul>" + list + "</ul>";
                 }
             }
         }
