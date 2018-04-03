@@ -1,12 +1,10 @@
-console.log("sw start");
 
 (function (){
-    const serverWorker = {
+    const serviceWorker = {
         
         init() {
-            console.log("init?");
-            self.addEventListener("install", serverWorker.eventFunctions.install);
-            self.addEventListener("fetch", serverWorker.eventFunctions.fetch);
+            self.addEventListener("install", serviceWorker.eventFunctions.install);
+            self.addEventListener("fetch", serviceWorker.eventFunctions.fetch);
         },
         version: {
             versionValue: "1.0.0",
@@ -19,10 +17,9 @@ console.log("sw start");
         },
         eventFunctions: {
             install (e) {
-                console.log("works?");
                 
                 e.waitUntil(
-                    caches.open(serverWorker.version.get())
+                    caches.open(serviceWorker.version.get())
                     .then(cache => cache.addAll([
                         "/offline/offline.html"
                     ]))
@@ -32,19 +29,7 @@ console.log("sw start");
             fetch (e) {
                 const request = e.request;
                 
-
-                // let httpRequest = new XMLHttpRequest();
-
-                // httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
-                // httpRequest.open("POST", "/log", true);
-                // console.log("post request");
-
-
-                
-                // httpRequest.send(JSON.stringify(request.url));
-
-                serverWorker.log.url(request.url);
+                serviceWorker.log.url(request.url);
 
 
                 if (request.mode === "navigate") {  
@@ -52,8 +37,8 @@ console.log("sw start");
 
                     e.respondWith(
                         fetch(request)
-                            .then(response => serverWorker.cacheFile(request, response))
-                            .catch(err => serverWorker.fetchCoreFile(request.url))
+                            .then(response => serviceWorker.cacheFile(request, response))
+                            .catch(err => serviceWorker.fetchCoreFile(request.url))
                             .catch(err => fetchCoreFile("/offline/offline.html"))
                     );
                 } else {
@@ -70,13 +55,13 @@ console.log("sw start");
                     if (possibleExtension != undefined && acceptableExtensions[possibleExtension]) { 
                         e.respondWith(
                             fetch(request)
-                                .then(response => serverWorker.cacheFile(request, response))
-                                .catch(err => serverWorker.fetchCoreFile(request.url))
+                                .then(response => serviceWorker.cacheFile(request, response))
+                                .catch(err => serviceWorker.fetchCoreFile(request.url))
                         );
                     } else {
                         e.respondWith(
                             fetch(request)
-                                .catch(err => serverWorker.fetchCoreFile(request.url))
+                                .catch(err => serviceWorker.fetchCoreFile(request.url))
                         );
                     }
                 }
@@ -101,20 +86,20 @@ console.log("sw start");
             }
         },
         fetchCoreFile(url) {
-            return caches.open(serverWorker.version.get())
+            return caches.open(serviceWorker.version.get())
                 .then(cache => cache.match(url))
                 .then(response => response ? response : Promise.reject());
         },
         cacheFile(request, response) { 
             const clonedResponse = response.clone();
-            caches.open(serverWorker.version.get())
+            caches.open(serviceWorker.version.get())
                 .then(cache => cache.put(request, clonedResponse));
             return response;
         }
     };
 
 
-    serverWorker.init();
+    serviceWorker.init();
 })();
 
 
